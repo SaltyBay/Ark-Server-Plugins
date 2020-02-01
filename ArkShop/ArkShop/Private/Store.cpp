@@ -8,6 +8,46 @@
 
 namespace ArkShop::Store
 {
+
+	/* ============================================ [type definitions] ============================================ */
+
+	/**
+	*  \brief time struct
+	*/
+	typedef struct
+	{
+		int hours;       /**< \brief value for hours */
+		int minutes;     /**< \brief value for minutes */
+		int secounds;    /**< \brief value for secounds */
+
+	}SlotCooldown_t;
+
+	/**
+	* \brief Gets a SlotCooldown_t with the time
+	*
+	* This functions returns a SlotCooldown_t with difference of the time
+	*
+	* \param[in] AvailableTime the timer
+	* \param[in] ServerRunTime the current server runntime
+	* \return SlotCooldown_t struct with the times
+	*/
+	static SlotCooldown_t GetAvailableTimeDiff(long double AvailableTime, long double ServerRunTime)
+	{
+		SlotCooldown_t result = { 0 };
+
+		int timediff = AvailableTime - ServerRunTime;
+
+		if (0 < timediff)
+		{
+			result.hours = (int)(timediff / 3600);
+			result.minutes = (int)(((float)(timediff % 3600)) / 60);
+			result.secounds = (int)((float)((timediff % 3600) % 60));
+		}
+
+		return result;
+	}
+
+
 	/**
 	 * \brief Buy an item from shop
 	 */
@@ -22,6 +62,7 @@ namespace ArkShop::Store
 		}
 
 		const unsigned price = item_entry["Price"];
+
 		const int final_price = price * amount;
 		if (final_price <= 0)
 		{
@@ -290,6 +331,19 @@ namespace ArkShop::Store
 			{
 				ArkApi::GetApiUtils().SendChatMessage(player_controller, GetText("Sender"),
 				                                      *GetText("BadLevel"), min_level, max_level);
+				return false;
+			}
+
+			const unsigned time = item_entry.value("Time", 0) *3600;
+			auto currentServerTime = ArkApi::GetApiUtils().GetWorld()->TimeSecondsField();
+
+			if (time > currentServerTime)
+			{
+				SlotCooldown_t timediff = GetAvailableTimeDiff(time, currentServerTime);
+
+				ArkApi::GetApiUtils().SendChatMessage(player_controller, GetText("Sender"),
+					*GetText("BadTimeShop"), timediff.hours, timediff.minutes);
+
 				return false;
 			}
 

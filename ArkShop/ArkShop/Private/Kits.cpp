@@ -11,6 +11,46 @@ namespace ArkShop::Kits
 {
 	DECLARE_HOOK(AShooterCharacter_AuthPostSpawnInit, void, AShooterCharacter*);
 
+
+
+	/* ============================================ [type definitions] ============================================ */
+
+	/**
+	*  \brief time struct
+	*/
+	typedef struct
+	{
+		int hours;       /**< \brief value for hours */
+		int minutes;     /**< \brief value for minutes */
+		int secounds;    /**< \brief value for secounds */
+
+	}SlotCooldown_t;
+
+	/**
+	* \brief Gets a SlotCooldown_t with the time
+	*
+	* This functions returns a SlotCooldown_t with difference of the time
+	*
+	* \param[in] AvailableTime the timer
+	* \param[in] ServerRunTime the current server runntime
+	* \return SlotCooldown_t struct with the times
+	*/
+	static SlotCooldown_t GetAvailableTimeDiffTimeKit(long double AvailableTime, long double ServerRunTime)
+	{
+		SlotCooldown_t result = { 0 };
+
+		int timediff = AvailableTime - ServerRunTime;
+
+		if (0 < timediff)
+		{
+			result.hours = (int)(timediff / 3600);
+			result.minutes = (int)(((float)(timediff % 3600)) / 60);
+			result.secounds = (int)((float)((timediff % 3600) % 60));
+		}
+
+		return result;
+	}
+
 	/**
 	 * \brief Returns kits info of specific player
 	 */
@@ -269,6 +309,20 @@ namespace ArkShop::Kits
 				                                      *GetText("OnlyOnSpawnKit"));
 				return;
 			}
+
+			const unsigned time = kit_entry.value("Time", 0) * 3600;
+			auto currentServerTime = ArkApi::GetApiUtils().GetWorld()->TimeSecondsField();
+
+			if (time > currentServerTime)
+			{
+				SlotCooldown_t timediff = GetAvailableTimeDiffTimeKit(time, currentServerTime);
+
+				ArkApi::GetApiUtils().SendChatMessage(player_controller, GetText("Sender"),
+					*GetText("BadTimeKit"), timediff.hours, timediff.minutes);
+
+				return;
+			}
+
 
 			if (const int kit_amount = GetKitAmount(steam_id, kit_name);
 				kit_amount > 0 && ChangeKitAmount(kit_name, -1, steam_id))

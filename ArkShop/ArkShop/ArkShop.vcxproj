@@ -46,7 +46,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;SHOP_EXPORTS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\ArkShop\Public;..\Includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ArkShop\Public;..\Includes;C:\Users\Matth\Documents\arkplugins\ark-api\version\Core\Public</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -55,6 +55,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <DelayLoadDLLs>Permissions.dll</DelayLoadDLLs>
       <AdditionalLibraryDirectories>..\Libs;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>C:\Users\Matth\Documents\arkplugins\ark-api\out_lib\ArkApi.lib;C:\Users\Matth\Documents\arkplugins\Ark-Server-Plugins\Permissions\out_lib\Permissions.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -68,6 +69,7 @@
     <ClInclude Include="Private\StoreSell.h" />
     <ClInclude Include="Private\TimedRewards.h" />
     <ClInclude Include="Private\Tools.h" />
+    <ClInclude Include="Private\UIHandler\UIHandler.h" />
     <ClInclude Include="Public\Base.h" />
     <ClInclude Include="Public\DBHelper.h" />
     <ClInclude Include="Public\ITimedRewards.h" />
@@ -84,6 +86,7 @@
     <ClCompile Include="Private\Store.cpp" />
     <ClCompile Include="Private\StoreSell.cpp" />
     <ClCompile Include="Private\TimedRewards.cpp" />
+    <ClCompile Include="Private\UIHandler\UIHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

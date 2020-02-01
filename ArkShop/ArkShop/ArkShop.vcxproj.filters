@@ -10,6 +10,9 @@
     <Filter Include="Private\Database">
       <UniqueIdentifier>{000d9792-63b8-4997-b1e2-7c23f45c0810}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Private\UIHandler">
+      <UniqueIdentifier>{93d3df5c-8905-4588-bff4-c701fe86a060}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Points.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="Private\Database\MysqlDB.h">
       <Filter>Private\Database</Filter>
     </ClInclude>
+    <ClInclude Include="Private\UIHandler\UIHandler.h">
+      <Filter>Private\UIHandler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Private\ArkShop.cpp">
@@ -85,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="Private\DBHelper.cpp">
       <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Private\UIHandler\UIHandler.cpp">
+      <Filter>Private\UIHandler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
